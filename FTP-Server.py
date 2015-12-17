@@ -144,12 +144,11 @@ class FTPServer(t.Thread):
 	def stop(self):
 		self.sock.close()
 
-def main():
+
+if __name__ == '__main__':
 	FTP 		= FTPServer()
 	FTP.daemon	= True
 	FTP.start()
 	print 'connect on ', ip,':',port
 	raw_input('Enter untuk mengakhiri...\n')
 	FTP.stop()
-
-main()
