@@ -103,7 +103,7 @@ class FTPServerFunction(t.Thread):
         self.connection.send('200 Binary mode.\r\n')
 
     def REST(self,command):
-        self.pos=init(command[5:-2])
+        self.pos=int(command[5:-2])
         self.rest=True
         self.connection.send('250 File position reseted.\r\n')
 
