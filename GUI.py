@@ -1,7 +1,7 @@
 from Tkinter import * #import Tk, Text, BOTH, W, N, E, S
 from ttk import * #Frame, Button, Label, Style
 import tkMessageBox
-
+import pickle
 class GUI(Frame):
 	def __init__(self,parent):
 		Frame.__init__(self,parent)
@@ -34,6 +34,9 @@ class GUI(Frame):
 					tkMessageBox.showerror("Error","User Telah Terdaftar")
 				else:
 					my_list.append(inp)
+					masuk = pickle.dump(my_list)
+					with open('user.txt','wb') as f:
+						f.write(masuk)
 					tkMessageBox.showinfo("Success","Berhasil Menambah User")
 					print my_list
 					flag = False
