@@ -1,0 +1,18 @@
+[Membuat FTP Server dan Klien]
+Ketentuannya adalah mengimplementasikan RFC 959 (dituliskan dengan subbab) sebagai berikut
+- Mempuat aplikasi FTP klien dan server
+- Autentikasi (USER dan PASS: 4.1.1) v
+- Mengubah direktori aktif (CWD: 4.1.1) v
+- tambahan CDUP v
+- Keluar aplikasi (QUIT: 4.1.1) v
+- Unduh (RETR: 4.1.3) v
+- Unggah (STOR: 4.1.3) v
+- Mengganti nama file (RNTO: 4.1.3) v & RNRF
+- Menghapus file (DELE: 4.1.3) v
+- Menghapus direktori (RMD: 4.1.3) v
+- Membuat direktori (MKD: 4.1.3) v
+- Mencetak direktori aktif (PWD: 4.1.3) v
+- Mendaftar file dan direktori (LIST: 4.1.3) v
+- HELP: 4.1.3 v
+- Reply codes (200, 500, 202, 230, 530: 4.2.1) v
+- Menerapkan teknik multiclient dengan modul select DAN thread
