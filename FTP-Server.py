@@ -6,10 +6,13 @@ import threading as t
 import os
 import platform
 import time
+import pickle
 
 #list untuk menampung username dan password
-user = [('hanif','123'),('burhan','123'),('ghulam','123'),('guruh','123')]
+with open('user.txt','rb') as f:
+	user = pickle.load(f)
 
+print user
 #define ip, port and max client
 ip 			= 'localhost'
 port 		= 12345
@@ -36,7 +39,7 @@ class FTPServerFunction(t.Thread):
 			if not command:
 				break
 			else:
-				print 'ini command : ', command
+				print 'ini command : ', command.strip()
 				try:
 					function = getattr(self,command[:4].strip().upper())
 					function(command)
