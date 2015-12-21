@@ -71,21 +71,37 @@ class Client(t.Thread):
 		self.pasv_mode	= False
 		self.basedirectory = currentdirectory
 		self.currentdirectory = self.basedirectory
+		self.closeflag = True
 
 	def run(self):
 		self.connection.send('220 Welcome!. ini adalah FTP sederhana kami :)\r\n')
-		while True:
+		# while True:
+		# 	command = self.connection.recv(1024)	
+		# 	if not command and self.closeflag :
+		# 		break
+		# 	else:
+		# 		print 'ini command : ', command.strip()
+		# 		try:
+		# 			function = getattr(self,command[:4].strip().upper())
+		# 			function(command)
+		# 		except Exception,e:
+		# 			print 'ERROR:',e
+		# 			self.connection.send('500 Syntax Error.\r\n')
+
+		running = 1
+		while running:
 			command = self.connection.recv(1024)
-			if not command:
-				break
-			else:
-				print 'ini command : ', command.strip()
+			if command and self.closeflag:
+				print 'ini command : ',command.strip()
 				try:
 					function = getattr(self,command[:4].strip().upper())
 					function(command)
 				except Exception,e:
 					print 'ERROR:',e
 					self.connection.send('500 Syntax Error.\r\n')
+			else:
+				self.connection.close()
+				running = 0
 
 	def USER(self,command):
 		username = command.strip().split(' ')[1]
@@ -103,11 +119,13 @@ class Client(t.Thread):
 			self.connection.send('230 Logged on\r\n')
 		else:
 			self.connection.send('530 Login or password incorrect!\r\n')
-			exit()
+			self.closeflag = False
+			#self.connection.close()
 
 	def QUIT(self,command):
 		self.connection.send('221 Goodbye.\r\n')
-		exit()
+		self.closeflag = False
+		#self.connection.close()
 
 	def MKD(self,command):
 		dirname=os.path.join(self.currentdirectory,command[4:-2])
@@ -145,6 +163,10 @@ class Client(t.Thread):
 		self.pos=int(command[5:-2])
 		self.rest=True
 		self.connection.send('250 File position reseted.\r\n')
+
+	def HELP(self,command):
+		pesan = "214-The following commands are reconized\n USER PASS MKD RMD DELE SYST AUTH SYST TYPE REST\n HELP RETR STOR PWD CWD CDUP PASV RNFR RNTO LIST\n214 Help OK.\r\n"
+		self.connection.send(pesan)
 
 	def RETR(self,command):
 		filename=os.path.join(self.currentdirectory,command[5:-2])
