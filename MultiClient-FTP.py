@@ -11,8 +11,10 @@ import sys
 import select
 
 #list untuk menampung username dan password
-with open('user.txt','rb') as f:
-	user = pickle.load(f)
+#with open('user.txt','rb') as f:
+#	user = pickle.load(f)
+
+user = [('a','1')]
 
 # print user
 #define ip, port and max client
