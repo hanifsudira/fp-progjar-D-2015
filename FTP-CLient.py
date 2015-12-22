@@ -32,46 +32,55 @@ class Client:
 					print 'ERROR:',e
 
 	def USER(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 
 	def PASS(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 
 	def HELP(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
-
+	
 	def QUIT(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 	
 	def SYST(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 	
 	def TYPE(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 
 	def PWD(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 
 	def CWD(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 
 	def CDUP(self,command):
+		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
@@ -112,7 +121,7 @@ class Client:
 			self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.data_sock.connect(('localhost',port))
 			self.server.send(command)
-			self.recvdata=self.data_sock.recv(4024)
+			self.recvdata=self.data_sock.recv(1024)
 			print self.recvdata.strip()
 
 
