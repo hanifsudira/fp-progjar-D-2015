@@ -70,6 +70,11 @@ class Client:
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
+
+	def CDUP(self,command):
+		self.server.send(command)
+		msg = self.server.recv(1024)
+		print msg.strip()
 	
 	def MKD(self,command):
 		command+="\r\n"
