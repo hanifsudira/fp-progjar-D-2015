@@ -95,6 +95,18 @@ class Client:
 		msg = self.server.recv(1024)
 		print msg.strip()
 
+	def RNTO(self,command):
+		command+="\r\n"
+		self.server.send(command)
+		msg = self.server.recv(1024)
+		print msg.strip()
+
+	def RNFR(self,command):
+		command+="\r\n"
+		self.server.send(command)
+		msg = self.server.recv(1024)
+		print msg.strip()
+
 	def RMD(self,command):
 		command+="\r\n"
 		self.server.send(command)
