@@ -8,7 +8,7 @@ Ketentuannya adalah mengimplementasikan RFC 959 (dituliskan dengan subbab) sebag
 - Keluar aplikasi (QUIT: 4.1.1) v
 - Unduh (RETR: 4.1.3) v
 - Unggah (STOR: 4.1.3) v
-- Mengganti nama file (RNTO: 4.1.3) v & RNRF
+- Mengganti nama file (RNTO: 4.1.3) v
 - Menghapus file (DELE: 4.1.3) v
 - Menghapus direktori (RMD: 4.1.3) v
 - Membuat direktori (MKD: 4.1.3) v

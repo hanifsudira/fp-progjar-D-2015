@@ -74,6 +74,7 @@ class Client(t.Thread):
 		self.basedirectory = currentdirectory
 		self.currentdirectory = self.basedirectory
 		self.closeflag = True
+		self.total = ""
 
 	def run(self):
 		self.connection.send('220 Welcome!. ini adalah FTP sederhana kami :)\r\n')
@@ -186,7 +187,7 @@ class Client(t.Thread):
 		while data:
 			self.datasock.send(data)
 			data=fileinput.read(1024)
-		f.close()
+		fileinput.close()
 		self.stop_datasock()
 		self.connection.send('226 Transfer complete.\r\n')
 
@@ -271,7 +272,8 @@ class Client(t.Thread):
 		self.start_datasock()
 		for t in os.listdir(self.currentdirectory):
 			k=self.toListItem(os.path.join(self.currentdirectory,t))
-			self.datasock.send(k+'\r\n')
+			self.total+=(k+'\r\n')
+		self.datasock.send(self.total)
 		self.stop_datasock()
 		self.connection.send('226 Directory send OK.\r\n')
 

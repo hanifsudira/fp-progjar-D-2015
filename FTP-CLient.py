@@ -45,7 +45,7 @@ class Client:
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
-	
+
 	def QUIT(self,command):
 		self.server.send(command)
 		msg = self.server.recv(1024)
@@ -112,7 +112,7 @@ class Client:
 			self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.data_sock.connect(('localhost',port))
 			self.server.send(command)
-			self.recvdata=self.data_sock.recv(1024)
+			self.recvdata=self.data_sock.recv(4024)
 			print self.recvdata.strip()
 
 
