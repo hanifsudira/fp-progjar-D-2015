@@ -144,7 +144,7 @@ class Client(t.Thread):
 			self.connection.send('450 Not allowd.\r\n')
 
 	def DELE(self,command):
-		filename=os.path.join(self.currentdirectory,command[5:-1])
+		filename=os.path.join(self.currentdirectory,command[5:-2])
 		if allow_delete:
 			os.remove(filename)
 			self.connection.send('250 File delete.\r\n')

@@ -121,19 +121,12 @@ class Client:
 		msg = self.server.recv(1024)
 		print msg.strip()
 
-	# def PASV():
-	# 	self.server.send('PASV\r\n')
-	# 	msg = self.server.recv(1024)
-	# 	print msg.strip()
-	# 	data_port = str(msg.strip().split('(')[1][:-2])
-	# 	p1=int(data_port.split(',')[4])
-	# 	p2=int(data_port.split(',')[5])
-	# 	data_port = p1 * 256 + p2
-	# 	self.data = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	# 	self.data.connect(('localhost', data_port))
-	# 	self.recvdata=self.data.recv(1024)
-	# 	print self.recvdata
-
+	def DELE(self,command):
+		command+="\r\n"
+		self.server.send(command)
+		msg = self.server.recv(1024)
+		print msg.strip()
+	
 	def PASV(self):
 		command="PASV\r\n"
 		self.server.send(command)
@@ -163,16 +156,17 @@ class Client:
 		port=self.PASV()
 		self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.data_sock.connect(('localhost',port))
-		#self.data_sock.recv(1024)
-		#self.data_sock.recv(1024)
+
 		command+="\r\n"
 		self.server.send(command)
 		msg = self.server.recv(1024)
 		print msg.strip()
 		
-		with open (filename, 'rb') as f:
-			l = f.read()
+		f = open(filename,'rb')
+		l = f.read()
+		f.close()
 		self.data_sock.sendall(l)
+		self.data_sock.close()
 		
 		msg = self.server.recv(1024)
 		print msg.strip()
