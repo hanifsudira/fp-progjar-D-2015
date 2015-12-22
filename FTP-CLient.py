@@ -14,6 +14,7 @@ class Client:
 		self.data_sock	= None
 		self.recvdata	= ""
 		self.currentdirectory = currentdirectory
+		self.isi		= ""
 	
 	def opensocket(self):
 		self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -70,6 +71,13 @@ class Client:
 		self.server.send(com)
 		msg = self.server.recv(1024)
 		print msg.strip()	
+
+	def TYPERETR(self):
+		com="TYPE A\r\n"
+		self.server.send(com)
+		msg = self.server.recv(1024)
+		print msg.strip()
+
 
 	def PWD(self,command):
 		command+="\r\n"
@@ -168,7 +176,31 @@ class Client:
 		
 		msg = self.server.recv(1024)
 		print msg.strip()
-		
+
+	def RETR(self,command):
+		filename=os.path.join(self.currentdirectory,command[5:])
+		self.TYPERETR()
+		port=self.PASV()
+		self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.data_sock.connect(('localhost',port))
+		#self.data_sock.recv(1024)
+		#self.data_sock.recv(1024)
+		command+="\r\n"
+		self.server.send(command)
+		msg = self.server.recv(1024)
+		print msg.strip()
+
+		with open (filename, 'wb') as f:
+			self.isi = self.data_sock.recv(4096)
+			while (self.isi):
+				if not self.isi: break
+				else:
+					f.write(self.isi)
+					self.isi = self.data_sock.recv(4096)
+
+		msg = self.server.recv(1024)
+		print msg.strip()
+
 
 def main():
 	newclient = Client(('localhost',12345))
