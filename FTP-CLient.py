@@ -2,6 +2,9 @@
 #Author : Guruh, Burhan, Ghulam, Hanif
 
 import socket 
+import os
+
+currentdirectory = os.path.abspath('.')
 
 class Client:
 	def __init__(self,(ip,port)):
@@ -10,7 +13,8 @@ class Client:
 		self.server 	= None
 		self.data_sock	= None
 		self.recvdata	= ""
-
+		self.currentdirectory = currentdirectory
+	
 	def opensocket(self):
 		self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.server.connect((self.serverip,self.port))
@@ -61,11 +65,11 @@ class Client:
 		msg = self.server.recv(1024)
 		print msg.strip()
 	
-	def TYPE(self,command):
-		command+="\r\n"
-		self.server.send(command)
+	def TYPESTOR(self):
+		com="TYPE I\r\n"
+		self.server.send(com)
 		msg = self.server.recv(1024)
-		print msg.strip()
+		print msg.strip()	
 
 	def PWD(self,command):
 		command+="\r\n"
@@ -130,6 +134,26 @@ class Client:
 		print self.recvdata.strip()
 		msg = self.server.recv(1024)
 		print msg.strip()
+		msg = self.server.recv(1024)
+		print msg.strip()
+	
+	def STOR(self,command):
+		filename=os.path.join(self.currentdirectory,command[5:])
+		self.TYPESTOR()
+		port=self.PASV()
+		self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.data_sock.connect(('localhost',port))
+		#self.data_sock.recv(1024)
+		#self.data_sock.recv(1024)
+		command+="\r\n"
+		self.server.send(command)
+		msg = self.server.recv(1024)
+		print msg.strip()
+		
+		with open (filename, 'rb') as f:
+			l = f.read()
+		self.data_sock.sendall(l)
+		
 		msg = self.server.recv(1024)
 		print msg.strip()
 		

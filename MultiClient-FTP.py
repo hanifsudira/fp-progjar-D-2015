@@ -267,6 +267,7 @@ class Client(t.Thread):
 			self.serversock.close()
 
 	def LIST(self,command):
+		self.total = ""
 		self.connection.send('150 Here comes the directory listing.\r\n')
 		print 'list:', self.currentdirectory
 		self.start_datasock()
