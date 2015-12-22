@@ -8,7 +8,7 @@ class Client:
 		self.serverip 	= ip
 		self.port 		= port
 		self.server 	= None
-		self.data 		= None
+		self.data_sock	= None
 		self.recvdata	= ""
 
 	def opensocket(self):
@@ -71,44 +71,32 @@ class Client:
 		msg = self.server.recv(1024)
 		print msg.strip()
 
-	def PASV():
-		self.server.send('PASV\r\n')
-		msg = self.server.recv(1024)
-		print msg.strip()
-		data_port = str(msg.strip().split('(')[1][:-2])
-		p1=int(data_port.split(',')[4])
-		p2=int(data_port.split(',')[5])
-		data_port = p1 * 256 + p2
-		self.data = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.data.connect(('localhost', data_port))
-		self.recvdata=self.data.recv(1024)
-		print self.recvdata
+	# def PASV():
+	# 	self.server.send('PASV\r\n')
+	# 	msg = self.server.recv(1024)
+	# 	print msg.strip()
+	# 	data_port = str(msg.strip().split('(')[1][:-2])
+	# 	p1=int(data_port.split(',')[4])
+	# 	p2=int(data_port.split(',')[5])
+	# 	data_port = p1 * 256 + p2
+	# 	self.data = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	# 	self.data.connect(('localhost', data_port))
+	# 	self.recvdata=self.data.recv(1024)
+	# 	print self.recvdata
 
 	def LIST(self,command):
 		self.server.send('PASV\r\n')
 		msg = self.server.recv(1024)
+		data = msg.strip() 
 		print msg.strip()
-		data_port = str(msg.strip().split('(')[1][:-2])
-		p1=int(data_port.split(',')[4])
-		p2=int(data_port.split(',')[5])
-		data_port = p1 * 256 + p2
-		print p1,p2,data_port
-		
-		self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.data_sock.connect(('localhost', data_port))
-		
-		self.recvdata=self.data_sock.recv(1024)
-		
-		print self.recvdata
-		# while self.recvdata:
-		# 	temp=self.recvdata.recv(1024)
-		# 	if temp=='':
-		# 		break
-		# 	self.recvdata+=temp
-		# print self.recvdata.strip()
-		# self.server.send(command)
-		# msg = self.server.recv(1024)
-		# print msg.strip()
+		if "Entering Passive Mode" in msg:
+			tp = data.split('(')[1].split(')')[0].split(',')
+			port = int(tp[4])*256+int(tp[5])
+			self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.data_sock.connect(('localhost',port))
+			self.server.send(command)
+			self.recvdata=self.data_sock.recv(1024)
+			print self.recvdata.strip()
 
 
 def main():
