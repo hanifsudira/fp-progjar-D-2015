@@ -110,20 +110,29 @@ class Client:
 	# 	self.recvdata=self.data.recv(1024)
 	# 	print self.recvdata
 
-	def LIST(self,command):
-		self.server.send('PASV\r\n')
+	def PASV(self):
+		command="PASV\r\n"
+		self.server.send(command)
 		msg = self.server.recv(1024)
-		data = msg.strip() 
 		print msg.strip()
+		data = msg.strip() 
 		if "Entering Passive Mode" in msg:
 			tp = data.split('(')[1].split(')')[0].split(',')
 			port = int(tp[4])*256+int(tp[5])
-			self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.data_sock.connect(('localhost',port))
-			self.server.send(command)
-			self.recvdata=self.data_sock.recv(1024)
-			print self.recvdata.strip()
+		return port 
 
+	def LIST(self,command):
+		port=self.PASV()
+		self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.data_sock.connect(('localhost',port))
+		self.server.send(command)
+		self.recvdata=self.data_sock.recv(1024)
+		print self.recvdata.strip()
+		msg = self.server.recv(1024)
+		print msg.strip()
+		msg = self.server.recv(1024)
+		print msg.strip()
+		
 
 def main():
 	newclient = Client(('localhost',12345))
